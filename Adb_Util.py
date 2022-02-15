@@ -59,8 +59,10 @@ class Adb_Util:
             for line in packages_command.stdout.decode('utf-8').splitlines():
                 line = line.split('package:')
                 packages = np.append(packages, line[1])
-            print(packages)
-            print(len(packages))
+# =============================================================================
+#             print(packages)
+#             print(len(packages))
+# =============================================================================
             return packages
         else:
             print(packages_command.stderr)
@@ -97,6 +99,10 @@ class Adb_Util:
 
         return devices 
         
+    
+    def device_info(self, deviceID, adb_arg):
+        device_info_command = subprocess.run(['adb', '-s', deviceID, 'shell', 'getprop', adb_arg], capture_output=True, shell=True)
+        return device_info_command.stdout.decode('utf8')
         
         
 

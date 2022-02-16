@@ -8,10 +8,13 @@ import subprocess
 import numpy as np
 
 class Adb_Util:
+
+
     #TODO start adb server
     def __init__(self):
         pass
-        
+    
+    
     # Starts adb server
     def start_server(self):
         start = subprocess.run(['adb', 'start-server'],
@@ -22,6 +25,7 @@ class Adb_Util:
         else:
             print("adb server opened!")
     
+    
     # kills-adb server
     def kill_server(self):
         kill = subprocess.run(['adb', 'kill-server'],
@@ -31,6 +35,7 @@ class Adb_Util:
                   % kill.returncode)
         else:
             print("adb server closed!")
+
 
     # Installs file using adb command
     def install_package(self, file, deviceID):
@@ -46,6 +51,7 @@ class Adb_Util:
             print("Failed to install apk: %s" % file, " with code %d" 
                   % install_command.returncode)
             return False
+
     
     def unistall_package(self, deviceID, package_name):
         print("Uninstalling", package_name)
@@ -85,13 +91,11 @@ class Adb_Util:
         
         
     def get_device_list(self):
-        
-        
+                
         devices = np.array([])
         
         get_device_command = subprocess.run(['adb', 'devices'],
                                             capture_output=True, shell=True)
-        
         
         if get_device_command.returncode == 0:
             print("Getting device list:\n")
@@ -111,6 +115,7 @@ class Adb_Util:
             print("An error occured when running get devices:",
                   get_device_command.stderr)
             return get_device_command.returncode
+        
         if len(devices) == 0:
             print("Device list is empty...")
 

@@ -8,10 +8,12 @@ import subprocess
 
 class App:
     
+    
     def __init__(self, directory="C:\\Users\\tommy\\CSC221\\Android_Project1",
                  app_name="Null",
                  package_name=None,
                  size=0,
+                 developer="Null",
                  version=None,
                  version_code=None,
                  target_sdk=None,
@@ -22,6 +24,7 @@ class App:
         
         self.app_name = app_name
         self.package_name = package_name
+        self.developer = developer
         self.size = size
         self.version = version
         self.version_code = version_code
@@ -30,8 +33,7 @@ class App:
         self.rating = rating
         self.maturity = maturity
         self.flags = flags
-        pass
-    
+        
     
     #aapt2 dump badging com.booking.apk
     def extract_manifest(self, file_name):
@@ -71,14 +73,16 @@ class App:
         else:
             print("An error occured when extracting manifest", 
                   manifest_command.stderr)
+    
             
     def __str__(self):
-        string = "App Name: {:s}\nPackage Name: {:s}\nSize: {:.2f}\n" \
-            "Version {:s}\nVersion Code: {:s}\nTarget SDK: {:s}\n" \
-            "Min SDK: {:s}\nStar Rating: {:s}\nMaturity: {:s}" \
-            .format(self.app_name, self.package_name, self.size, 
-                    self.version, self.version_code, self.target_sdk, 
-                    self.min_sdk, self.rating, self.maturity)
+        string = "App Name: {:s}\nPackage Name: {:s}\nDeveloper: {:s}" \
+            "\nSize: {:.2f}\nVersion {:s}\nVersion Code: {:s}" \
+            "\nTarget SDK: {:s}\nMin SDK: {:s}" \
+            "\nStar Rating: {:s}\nMaturity: {:s}" \
+            .format(self.app_name, self.package_name, self.developer, 
+                    self.size, self.version, self.version_code,
+                    self.target_sdk, self.min_sdk, self.rating, self.maturity)
         return string
             
             

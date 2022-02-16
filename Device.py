@@ -8,6 +8,8 @@ import numpy as np
 from Adb_Util import Adb_Util
 
 class Device:
+
+
     def __init__(self, deviceID,
                  os=None,
                  sdk=None,
@@ -48,6 +50,7 @@ class Device:
 
     def init_package_list(self):
         self.packageList = Adb_Util().package_list(self.deviceID)
+
         
     #ro.product.model
     #adb -s A00000K580152200711 shell getprop ro.product.model
@@ -61,6 +64,7 @@ class Device:
         device_name = device_name_command.split('\r')
         return device_name[0]
 
+
     # pulls screen density using device id and command arg for adb
     def init_screen_density(self):
         
@@ -73,7 +77,6 @@ class Device:
         return screen_density[0]
     
         
-    
     #[ro.product.cpu.abi]: [armeabi-v7a] [ro.product.cpu.abi2]: [armeabi]
     def init_cpu_arch(self):
         cpu_arch_command = Adb_Util().device_info(
@@ -92,6 +95,7 @@ class Device:
             )
         
         return sdk_command
+    
     
     def init_os(self):
         
@@ -113,12 +117,14 @@ class Device:
                 Adb_Util().unistall_package(self.deviceID, package_name)
         else:
             print("The amount of apps installed on device is currently 0")
+    
             
     def uninstall(self, package_name):
         if len(self.packageList) > 0:
             Adb_Util().unistall_package(self.deviceID, package_name)
         else:
             print("The amount of apps installed on device is currently 0")
+    
     
     def get_packageList(self):
         return self.packageList

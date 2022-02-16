@@ -14,35 +14,47 @@ class Adb_Util:
         
     # Starts adb server
     def start_server(self):
-        start = subprocess.run(['adb', 'start-server'], capture_output=True, shell=True)
+        start = subprocess.run(['adb', 'start-server'],
+                               capture_output=True, shell=True)
         if start.returncode != 0:
-            print("Something whent wrong. Server not started %d" % start.returncode)
+            print("Something whent wrong. Server not started %d"
+                  % start.returncode)
         else:
             print("adb server opened!")
     
     # kills-adb server
     def kill_server(self):
-        kill = subprocess.run(['adb', 'kill-server'], capture_output=True, shell=True)
+        kill = subprocess.run(['adb', 'kill-server'],
+                              capture_output=True, shell=True)
         if kill.returncode != 0:
-            print("Server not closed. Something went wrong %d" % kill.returncode)
+            print("Server not closed. Something went wrong %d"
+                  % kill.returncode)
         else:
             print("adb server closed!")
 
     # Installs file using adb command
     def install_package(self, file, deviceID):
-        install_command = subprocess.run(['adb', '-s', deviceID, 'install', file], capture_output=True, shell=True)
+        install_command = subprocess.run([
+            'adb', '-s', deviceID,
+            'install', file],
+            capture_output=True, shell=True)
+        
         if install_command.returncode == 0:
             print("Package {:s} installed".format(file))
             return True
         else:
-            print("Failed to install apk: %s" % file, " with code %d" % install_command.returncode)
+            print("Failed to install apk: %s" % file, " with code %d" 
+                  % install_command.returncode)
             return False
     
     def unistall_package(self, deviceID, package_name):
         print("Uninstalling", package_name)
-        uninstall_command = subprocess.run(['adb', '-s', deviceID, 'uninstall', package_name])
+        uninstall_command = subprocess.run([
+            'adb', '-s', deviceID, 'uninstall', package_name])
+        
         if uninstall_command.returncode == 0:
             print(package_name, "uninstalled successfully\n")
+        
         else:
             print(uninstall_command.stdout)
             print("An error occured with package", package_name)
@@ -53,7 +65,10 @@ class Adb_Util:
     # adb -s R38M40EX5ZA shell cmd package list packages
     def package_list(self, device_id):
         packages = np.array([])
-        packages_command = subprocess.run(['adb', '-s', device_id, 'shell', 'cmd', 'package', 'list', 'packages', '-3' ], capture_output=True, shell=True)
+        packages_command = subprocess.run([
+            'adb', '-s', device_id, 'shell','cmd',
+            'package', 'list', 'packages', '-3'
+            ], capture_output=True, shell=True)
 
         if packages_command.returncode == 0:
             for line in packages_command.stdout.decode('utf-8').splitlines():
@@ -74,7 +89,8 @@ class Adb_Util:
         
         devices = np.array([])
         
-        get_device_command = subprocess.run(['adb', 'devices'], capture_output=True, shell=True)
+        get_device_command = subprocess.run(['adb', 'devices'],
+                                            capture_output=True, shell=True)
         
         
         if get_device_command.returncode == 0:
@@ -92,7 +108,8 @@ class Adb_Util:
                         devices = np.append(devices, line[0])
                 
         else:
-            print("An error occured when running get devices:", get_device_command.stderr)
+            print("An error occured when running get devices:",
+                  get_device_command.stderr)
             return get_device_command.returncode
         if len(devices) == 0:
             print("Device list is empty...")
@@ -101,7 +118,10 @@ class Adb_Util:
         
     
     def device_info(self, deviceID, adb_arg):
-        device_info_command = subprocess.run(['adb', '-s', deviceID, 'shell', 'getprop', adb_arg], capture_output=True, shell=True)
+        device_info_command = subprocess.run([
+            'adb', '-s', deviceID, 
+            'shell', 'getprop', adb_arg
+            ], capture_output=True, shell=True)
         return device_info_command.stdout.decode('utf8')
         
         

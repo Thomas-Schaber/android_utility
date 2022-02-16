@@ -8,7 +8,13 @@ import numpy as np
 from Adb_Util import Adb_Util
 
 class Device:
-    def __init__(self, deviceID, os=None, sdk=None, cpu_arch=None, screen_density=None, name=None):
+    def __init__(self, deviceID,
+                 os=None,
+                 sdk=None,
+                 cpu_arch=None,
+                 screen_density=None,
+                 name=None):
+        
         self.deviceID = deviceID
         
         if name == None:
@@ -36,7 +42,8 @@ class Device:
         else:
             self.os = os
             
-        self.packageList = np.array([], dtype='S') 
+        self.packageList = np.array([], dtype='S')
+        self.init_package_list()
         
 
     def init_package_list(self):
@@ -46,13 +53,21 @@ class Device:
     #adb -s A00000K580152200711 shell getprop ro.product.model
     # Gets device name using adb
     def init_device_name(self):
-        device_name_command = Adb_Util().device_info(self.deviceID, 'ro.product.model')
+        
+        device_name_command = Adb_Util().device_info(
+            self.deviceID, 'ro.product.model'
+            )
+        
         device_name = device_name_command.split('\r')
         return device_name[0]
 
     # pulls screen density using device id and command arg for adb
     def init_screen_density(self):
-        screen_density_command =  Adb_Util().device_info(self.deviceID, 'ro.sf.lcd_density')
+        
+        screen_density_command =  Adb_Util().device_info(
+            self.deviceID, 'ro.sf.lcd_density'
+            )
+        
         screen_density = screen_density_command.split('\r')
         
         return screen_density[0]
@@ -61,17 +76,30 @@ class Device:
     
     #[ro.product.cpu.abi]: [armeabi-v7a] [ro.product.cpu.abi2]: [armeabi]
     def init_cpu_arch(self):
-        cpu_arch_command = Adb_Util().device_info(self.deviceID, 'ro.product.cpu.abi')
+        cpu_arch_command = Adb_Util().device_info(
+            self.deviceID,
+            'ro.product.cpu.abi'
+            )
+        
         return cpu_arch_command
     
     
     #Find device sdk version using command ro.build.version.sdk
     def init_sdk(self):
-        sdk_command = Adb_Util().device_info(self.deviceID, 'ro.build.version.sdk')
+        sdk_command = Adb_Util().device_info(
+            self.deviceID,
+            'ro.build.version.sdk'
+            )
+        
         return sdk_command
     
     def init_os(self):
-        os_command = Adb_Util().device_info(self.deviceID, 'ro.build.version.release')
+        
+        os_command = Adb_Util().device_info(
+            self.deviceID,
+            'ro.build.version.release'
+            )
+        
         return os_command
     
 
@@ -97,16 +125,30 @@ class Device:
     
     
     def __str__(self):
-        return "Device name: {:s} \nDevice ID: {:s}\nOS Version: {:s}SDK: {:s}cpu arch: {:s}Screen Density: {:s}\n".format(self.name, self.deviceID, self.os, self.sdk, self.cpu_arch, self.screen_density)
+        return "Device name: {:s} \nDevice ID: {:s}\nOS Version: {:s}" \
+            "SDK: {:s}cpu arch: {:s}Screen Density: {:s}\n" \
+            .format(self.name,
+                    self.deviceID,
+                    self.os,
+                    self.sdk,
+                    self.cpu_arch,
+                    self.screen_density)
     
-    
-    
+
     
 # =============================================================================
+# 
+# d3 = Device('RFCR71TEQWP')
+# d3.uninstall_all()
+# =============================================================================
 # d1 = Device('A00000K580152200711')
-# d2 = Device('R38M40EX5ZA')
+# d2 = Device('RFCR71TEQWP')
 # print(d1)
 # print(d2)
+# =============================================================================
+# d3 = Device('R38M40EX5ZA')
+# d3.uninstall_all()
+# =============================================================================
 # d1 = Device('A00000K580152200711', 'hdmix', 30, 'Go')
 # d1.init_package_list()
 # =============================================================================

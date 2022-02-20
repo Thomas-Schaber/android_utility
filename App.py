@@ -5,27 +5,35 @@ Created on Tue Feb 15 20:15:41 2022
 @author: tommy
 """
 import subprocess
+import pathlib
+import os
+import zipfile
 
 class App:
     
     
     def __init__(self, directory="C:\\Users\\tommy\\CSC221\\Android_Project1",
+                 file_name = "Null",
+                 file_type="Null",
                  app_name="Null",
-                 package_name=None,
+                 package_name="Null",
                  size=0,
                  developer="Null",
-                 version=None,
-                 version_code=None,
-                 target_sdk=None,
-                 min_sdk=None,
+                 version="Null",
+                 version_code="Null",
+                 target_sdk="Null",
+                 min_sdk="Null",
                  rating="Null",
                  maturity="Null",
-                 flags=None):
+                 flags=[]):
         
+        self.file_name = file_name
+        self.directory = directory
         self.app_name = app_name
         self.package_name = package_name
         self.developer = developer
         self.size = size
+        self.file_type = 'Null'
         self.version = version
         self.version_code = version_code
         self.target_sdk = target_sdk
@@ -34,26 +42,53 @@ class App:
         self.maturity = maturity
         self.flags = flags
         
+        self.init_file_type()
+        if self.file_type == '.apk':
+            self.extract_manifest(self.file_name)
+            
+        elif self.file_type == '.apks':
+            print("This is a bundle app")
+            print(self.file_name)
+            self.extract_base_apk(self.file_name)
+            self.extract_manifest('splits\\base.apk')
+            os.remove('splits\\base.apk')
+            os.rmdir('splits')
+
+
+        
+    def init_file_type(self):
+        self.file_type = pathlib.Path(self.directory 
+                                      + "\\" +self.file_name).suffix
+    
+    def extract_base_apk(self, file_name):
+
+        with zipfile.ZipFile(file_name) as apks:            
+            apks.extract('splits/base.apk')
+            
+        print("Successfully extracted base.apk")
+        
     
     #aapt2 dump badging com.booking.apk
     def extract_manifest(self, file_name):
         package_info = {}
         manifest_command = subprocess.run(
-            ['aapt', 'dump', 'badging', file_name],
+            ['aapt', 'dump', 'badging', self.directory + '\\' + file_name],
             capture_output=True, shell=True)
         
         if manifest_command.returncode == 0:
             
             for line in manifest_command.stdout.decode('utf8').splitlines():
-                
-                if line.__contains__("sdkVersion"):
+                #print(line)
+                if line.__contains__("sdkVersion:"):
                     min_sdk_version = line.split("sdkVersion:")
                     min_sdk_version = min_sdk_version[1].split("'")
                     self.min_sdk = min_sdk_version[1]
                 
-                if line.__contains__("targetSdkVersion"):
+                if line.__contains__("targetSdkVersion:"):
                     target_sdk_version = line.split("targetSdkVersion:")
+                    #print("Before:", target_sdk_version)
                     target_sdk_version = target_sdk_version[1].split("'")
+                    #print("After:", target_sdk_version)
                     self.target_sdk = target_sdk_version[1]
                 
                 if line.__contains__("package"):
@@ -76,18 +111,30 @@ class App:
     
             
     def __str__(self):
-        string = "App Name: {:s}\nPackage Name: {:s}\nDeveloper: {:s}" \
-            "\nSize: {:.2f}\nVersion {:s}\nVersion Code: {:s}" \
-            "\nTarget SDK: {:s}\nMin SDK: {:s}" \
-            "\nStar Rating: {:s}\nMaturity: {:s}" \
-            .format(self.app_name, self.package_name, self.developer, 
-                    self.size, self.version, self.version_code,
-                    self.target_sdk, self.min_sdk, self.rating, self.maturity)
+        if self.file_type == '.apk' or self.file_type == '.apks':
+            string = "File Name: {:s}\nFile Type {:s}\nApp Name: {:s}" \
+                "\nPackage Name: {:s}\nDeveloper: {:s}" \
+                "\nSize: {:.2f}\nVersion {:s}\nVersion Code: {:s}" \
+                "\nTarget SDK: {:s}\nMin SDK: {:s}" \
+                "\nStar Rating: {:s}\nMaturity: {:s}\n" \
+                .format(self.file_name, self.file_type, self.app_name,
+                        self.package_name, self.developer, 
+                        self.size, self.version, self.version_code,
+                        self.target_sdk, self.min_sdk, self.rating,
+                        self.maturity)
+        else:
+            string = "Invalid file type: " + self.file_name
+            
         return string
-            
-            
-a1 = App()
-a1.extract_manifest('C:\\Users\\tommy\\CSC221\\Android_Project1\\com.booking.apk')
-print(a1.min_sdk)
-print(a1.target_sdk)
-print(a1)
+    
+    
+    
+os.chdir('C:\\Users\\tommy\\CSC221\\Android_Project1\\apk')     
+for file in os.listdir():
+    if pathlib.Path(file).suffix == '.apk' or  pathlib.Path(file).suffix == '.apks':
+        print(App('C:\\Users\\tommy\\CSC221\\Android_Project1\\apk', file))
+#a1 = App('C:\\Users\\tommy\\CSC221\\Android_Project1\\apk', 'com.booking.apk')
+#a1.extract_manifest('com.booking.apk')
+# print(a1.min_sdk)
+# print(a1.target_sdk)
+#print(a1)

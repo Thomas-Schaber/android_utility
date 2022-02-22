@@ -64,8 +64,6 @@ class App:
         self.init_app_maturity()
         
         
-            
-    
     def init_app_name(self):
         self.app_name = self.search.get_name()
         
@@ -161,10 +159,10 @@ class App:
     
     
     
-os.chdir('C:\\Users\\tommy\\CSC221\\Android_Project1\\apk')     
-for file in os.listdir():
-    if pathlib.Path(file).suffix == '.apk' or  pathlib.Path(file).suffix == '.apks':
-        print(App('C:\\Users\\tommy\\CSC221\\Android_Project1\\apk', file))
+# os.chdir('C:\\Users\\tommy\\CSC221\\Android_Project1\\apk')     
+# for file in os.listdir():
+#     if pathlib.Path(file).suffix == '.apk' or  pathlib.Path(file).suffix == '.apks':
+#         print(App('C:\\Users\\tommy\\CSC221\\Android_Project1\\apk', file))
 #a1 = App('C:\\Users\\tommy\\CSC221\\Android_Project1\\apk', 'com.booking.apk')
 #a1.extract_manifest('com.booking.apk')
 # print(a1.min_sdk)

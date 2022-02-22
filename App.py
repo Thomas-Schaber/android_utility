@@ -8,6 +8,7 @@ import subprocess
 import pathlib
 import os
 import zipfile
+from Google_Play_Info import Google_Play_Info
 
 class App:
     
@@ -17,7 +18,7 @@ class App:
                  file_type="Null",
                  app_name="Null",
                  package_name="Null",
-                 size=0,
+                 size=0.0,
                  developer="Null",
                  version="Null",
                  version_code="Null",
@@ -42,32 +43,63 @@ class App:
         self.maturity = maturity
         self.flags = flags
         
+        
         self.init_file_type()
         if self.file_type == '.apk':
             self.extract_manifest(self.file_name)
             
         elif self.file_type == '.apks':
-            print("This is a bundle app")
-            print(self.file_name)
             self.extract_base_apk(self.file_name)
             self.extract_manifest('splits\\base.apk')
             os.remove('splits\\base.apk')
             os.rmdir('splits')
-
+        else:
+            raise Exception("Invalid file type")
+        
+        self.init_file_size()
+        self.search = Google_Play_Info(self.package_name)
+        self.init_app_name()
+        self.init_app_developer()
+        self.init_app_rating()
+        self.init_app_maturity()
+        
+        
+            
+    
+    def init_app_name(self):
+        self.app_name = self.search.get_name()
+        
+    
+    def init_app_developer(self):
+        self.developer = self.search.get_developer()
+        
+        
+    def init_app_rating(self):
+        self.rating = self.search.get_rating()
+            
+   
+    def init_app_maturity(self):
+        self.maturity = self.search.get_maturity()
 
         
     def init_file_type(self):
         self.file_type = pathlib.Path(self.directory 
                                       + "\\" +self.file_name).suffix
+        
+        
+    # Calculates files size in MB
+    def init_file_size(self):
+        self.size = os.path.getsize(self.file_name) / 1000000  
+        
     
     def extract_base_apk(self, file_name):
 
         with zipfile.ZipFile(file_name) as apks:            
             apks.extract('splits/base.apk')
             
-        print("Successfully extracted base.apk")
+        print("Successfully extracted base.apk\n")
         
-    
+            
     #aapt2 dump badging com.booking.apk
     def extract_manifest(self, file_name):
         package_info = {}

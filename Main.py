@@ -61,7 +61,12 @@ def main():
                             device.install_bundle(app.file_name)                
             
         elif choice == 'u'.lower():
-            pass
+            
+            for device in device_list:
+                device.init_package_list()
+                device.uninstall_all()
+
+
         elif choice == 'p'.lower():
             pass
         elif choice == 'g'.lower():

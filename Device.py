@@ -119,6 +119,7 @@ class Device:
         if len(self.packageList) > 0:
             for package_name in self.packageList:
                 Adb_Util().unistall_package(self.deviceID, package_name)
+            self.init_package_list()
         else:
             print("The amount of apps installed on device is currently 0")
     

@@ -109,6 +109,10 @@ class Device:
 
     def install(self, file_path):
         Adb_Util().install_package(file_path, self.deviceID)
+        
+        
+    def install_bundle(self, file_path):
+        Adb_Util().install_bundle(file_path, self.deviceID)
     
     
     def uninstall_all(self):
@@ -142,11 +146,9 @@ class Device:
     
 
     
-# =============================================================================
-# 
+
 # d3 = Device('RFCR71TEQWP')
 # d3.uninstall_all()
-# =============================================================================
 # d1 = Device('A00000K580152200711')
 # d2 = Device('RFCR71TEQWP')
 # print(d1)

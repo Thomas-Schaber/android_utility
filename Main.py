@@ -24,13 +24,42 @@ def main():
         line += '-'
         
     choice = ""
+    device_list_serials = []
+    device_list = []
+    app_list = []
+    print("Initializing app list...")
+    os.chdir(apk_directory)
+
+    for file in os.listdir():
+        try:
+            app_list.append(App(apk_directory, file))
+        except Exception as e:
+            print(e)
+            pass
+    print(len(app_list), "apps found\n")
+    print("initializing device list...")
+    device_list_serials = Adb_Util().get_device_list()
+    
+    for serial_number in device_list_serials:
+        #print(device_list_serials[serial_number])
+        device_list.append(Device(serial_number))
+    for device in device_list:
+        print(device)
     
     while choice.lower() != 'e'.lower():
         
         choice = input(question + "\n" + line + "\n").lower()
         
         if choice == 'i':
-            pass
+            
+            if len(device_list) > 0:
+                for device in device_list:
+                    for app in app_list:
+                        if app.file_type == ".apk":
+                            device.install(app.file_name)
+                        else:
+                            device.install_bundle(app.file_name)                
+            
         elif choice == 'u'.lower():
             pass
         elif choice == 'p'.lower():

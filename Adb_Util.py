@@ -45,11 +45,28 @@ class Adb_Util:
             capture_output=True, shell=True)
         
         if install_command.returncode == 0:
-            print("Package {:s} installed".format(file))
+            print("Package {:s}\ninstalled\n".format(file))
             return True
         else:
-            print("Failed to install apk: %s" % file, " with code %d" 
-                  % install_command.returncode)
+            print("Failed to install apk: %s" % file, " with code %s" 
+                  % install_command.stderr)
+            return False
+        
+        
+    def install_bundle(self, file, deviceID):
+        #java -jar bundletool-all.jar install-apks --apks=com.didiglobal.passenger.apks --device-id=RFCR71TEQWP
+        apk_arg = '--apks=' + file
+        device_arg = '--device-id=' + deviceID 
+        install_command = subprocess.run([
+            'java', '-jar', 'bundletool-all.jar', 'install-apks', apk_arg, device_arg],
+            capture_output=True, shell=True)
+        
+        if install_command.returncode == 0:
+            print("Package {:s}\ninstalled\n".format(file))
+            return True
+        else:
+            print("Failed to install apk: %s" % file, " with code %s" 
+                  % install_command.stderr)
             return False
 
     
@@ -129,8 +146,9 @@ class Adb_Util:
             ], capture_output=True, shell=True)
         return device_info_command.stdout.decode('utf8')
         
-        
 
+
+#Adb_Util().install_package(file, deviceID)
 #Adb_Util().start_server()
 
 #device_list = Adb_Util().get_device_list()

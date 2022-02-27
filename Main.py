@@ -27,6 +27,7 @@ def main():
     device_list_serials = []
     device_list = []
     app_list = []
+    Adb_Util().start_server()
     print("Initializing app list...")
     os.chdir(apk_directory)
 
@@ -49,6 +50,7 @@ def main():
     while choice.lower() != 'e'.lower():
         
         choice = input(question + "\n" + line + "\n").lower()
+        print()
         
         if choice == 'i':
             
@@ -69,12 +71,19 @@ def main():
 
         elif choice == 'p'.lower():
             pass
+        
         elif choice == 'g'.lower():
-            pass
-        elif choice == 'd'.lower:
-            pass
+            
+            for device in device_list:
+                print(device)
+            
+        elif choice == 'd'.lower():
+            for x in range(device_list_serials.size):
+                print(device_list_serials[x])
+                
         elif choice == 'e':
             print("Exiting...")
+            Adb_Util().kill_server()
         
         else:
             print("Invalid choice:", choice)

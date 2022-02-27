@@ -95,7 +95,7 @@ class App:
         with zipfile.ZipFile(file_name) as apks:            
             apks.extract('splits/base.apk')
             
-        print("Successfully extracted base.apk\n")
+        #print("Successfully extracted base.apk\n")
         
             
     #aapt2 dump badging com.booking.apk

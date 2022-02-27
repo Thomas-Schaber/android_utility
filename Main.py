@@ -10,7 +10,10 @@ This is the driver program for the android utility
 from Device import Device
 from Adb_Util import Adb_Util
 from Google_Play_Info import Google_Play_Info
+from Apk_Processor import Apk_Processor
 from App import App
+import numpy as np
+import sys
 import os
 
 
@@ -35,7 +38,6 @@ def main():
         try:
             app_list.append(App(apk_directory, file))
         except Exception as e:
-            print(e)
             pass
     print(len(app_list), "apps found\n")
     print("initializing device list...")
@@ -50,6 +52,7 @@ def main():
     while choice.lower() != 'e'.lower():
         
         choice = input(question + "\n" + line + "\n").lower()
+        choice = 'p'
         print()
         
         if choice == 'i':
@@ -70,6 +73,8 @@ def main():
 
 
         elif choice == 'p'.lower():
+            Apk_Processor(app_list)
+            sys.exit()
             pass
         
         elif choice == 'g'.lower():
@@ -87,7 +92,6 @@ def main():
         
         else:
             print("Invalid choice:", choice)
-    
     
     
     

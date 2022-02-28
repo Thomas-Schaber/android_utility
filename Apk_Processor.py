@@ -58,7 +58,6 @@ class Apk_Processor:
             
             if app.file_type == ".apks":
                 single_file.append("Warn")
-                flags.append("SysAlert")
                 
             elif app.file_type == ".apk":
                 single_file.append("Pass")
@@ -68,7 +67,8 @@ class Apk_Processor:
                 app_open.append("Warn")
             else:
                 app_open.append("Pass")
-                
+            
+            
             app_close.append("")
             roadblock.append("")
             sdk_inspection.append("Pass")
@@ -84,6 +84,12 @@ class Apk_Processor:
             uninstall.append("")
             conversion.append("Not Tested")
             
+            flag_str = ""
+            for flag in app.flags:
+                flag_str += flag
+                
+            flags.append(flag_str)
+
 
             
             
@@ -113,8 +119,8 @@ class Apk_Processor:
         self.data['app_scans'] = app_scans
         self.data['uninstall'] = uninstall
         self.data['conversion'] = conversion
-        
+        self.data['flags'] = flags
         
     
     def create_csv(self):
-        self.data.to_csv("package_info.csv")
+        self.data.to_csv("package_info.csv", encoding='utf-8-sig')

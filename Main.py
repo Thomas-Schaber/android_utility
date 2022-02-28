@@ -75,7 +75,7 @@ def main():
         elif choice == 'p'.lower():
             Apk_Processor(app_list)
             print("Processed successfully...")
-        
+
         elif choice == 'g'.lower():
             
             for device in device_list:

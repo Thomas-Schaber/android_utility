@@ -63,7 +63,6 @@ class App:
         self.init_app_rating()
         self.init_app_maturity()
         
-        
     def init_app_name(self):
         self.app_name = self.search.get_name()
         
@@ -89,7 +88,7 @@ class App:
     def init_file_size(self):
         self.size = os.path.getsize(self.file_name) / 1000000  
         
-    
+        
     def extract_base_apk(self, file_name):
 
         with zipfile.ZipFile(file_name) as apks:            
@@ -130,11 +129,16 @@ class App:
                         package_info.update(
                             {package_line[x]: package_line[x+1]}
                             )
-                    
+
                     self.package_name = package_info.get("package: name=")
                     self.version_code = package_info.get(" versionCode=")
                     self.version = package_info.get(" versionName=")
                     
+                if line.__contains__("android.permission.SYSTEM_ALERT_WINDOW"):
+                    # print(line)
+                    # print(self.flags)
+                    self.flags = []
+                    self.flags.append("SysAlert")                    
         else:
             print("An error occured when extracting manifest", 
                   manifest_command.stderr)
@@ -152,10 +156,14 @@ class App:
                         self.size, self.version, self.version_code,
                         self.target_sdk, self.min_sdk, self.rating,
                         self.maturity)
+            string += "Flags: "
+            for x in self.flags:
+                string += x + " "
+                
         else:
             string = "Invalid file type: " + self.file_name
             
-        return string
+        return string + "\n "
     
     
     

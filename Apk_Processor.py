@@ -58,10 +58,34 @@ class Apk_Processor:
             
             if app.file_type == ".apks":
                 single_file.append("Warn")
-            elif app.file_type == "apk":
+                flags.append("SysAlert")
+                
+            elif app.file_type == ".apk":
                 single_file.append("Pass")
                 
-            app_open.append("")
+            if app.flags.__contains__("SysAlert"):
+                #print(app.app_name, " ", app.flags)
+                app_open.append("Warn")
+            else:
+                app_open.append("Pass")
+                
+            app_close.append("")
+            roadblock.append("")
+            sdk_inspection.append("Pass")
+            app_match_description.append("")
+            google_reviews.append(app.rating)
+            app_renders.append("")
+            prohib_content.append("")
+            target_sdk.append(app.target_sdk)
+            min_sdk.append(app.min_sdk)
+            device_compat.append("")
+            invasive_ads.append("")
+            app_scans.append("")
+            uninstall.append("")
+            conversion.append("Not Tested")
+            
+
+            
             
             
             
@@ -75,6 +99,20 @@ class Apk_Processor:
         self.data['sideload'] = sideload
         self.data['single_file'] = single_file
         self.data['app_open'] = app_open
+        self.data['app_close'] = app_close
+        self.data['roadblock'] = roadblock
+        self.data['sdk_inspection'] = sdk_inspection
+        self.data['app_match_description'] = app_match_description
+        self.data['google_reviews'] = google_reviews
+        self.data['app_renders'] = app_renders
+        self.data['prohib_content'] = prohib_content
+        self.data['target_sdk'] = target_sdk
+        self.data['min_sdk'] = min_sdk
+        self.data['device_compat'] = device_compat
+        self.data['invasive_ads'] = invasive_ads
+        self.data['app_scans'] = app_scans
+        self.data['uninstall'] = uninstall
+        self.data['conversion'] = conversion
         
         
     

@@ -39,6 +39,7 @@ def main():
             app_list.append(App(apk_directory, file))
         except Exception as e:
             pass
+        
     print(len(app_list), "apps found\n")
     print("initializing device list...")
     device_list_serials = Adb_Util().get_device_list()
@@ -52,7 +53,6 @@ def main():
     while choice.lower() != 'e'.lower():
         
         choice = input(question + "\n" + line + "\n").lower()
-        choice = 'p'
         print()
         
         if choice == 'i':
@@ -74,8 +74,7 @@ def main():
 
         elif choice == 'p'.lower():
             Apk_Processor(app_list)
-            sys.exit()
-            pass
+            print("Processed successfully...")
         
         elif choice == 'g'.lower():
             

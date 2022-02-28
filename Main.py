@@ -42,13 +42,7 @@ def main():
         
     print(len(app_list), "apps found\n")
     print("initializing device list...")
-    device_list_serials = Adb_Util().get_device_list()
-    
-    for serial_number in device_list_serials:
-        #print(device_list_serials[serial_number])
-        device_list.append(Device(serial_number))
-    for device in device_list:
-        print(device)
+    device_list = refresh_device_list()
     
     while choice.lower() != 'e'.lower():
         
@@ -56,6 +50,7 @@ def main():
         print()
         
         if choice == 'i':
+            device_list =  refresh_device_list()
             
             if len(device_list) > 0:
                 for device in device_list:
@@ -66,6 +61,8 @@ def main():
                             device.install_bundle(app.file_name)                
             
         elif choice == 'u'.lower():
+            
+            device_list = refresh_device_list()
             
             for device in device_list:
                 device.init_package_list()
@@ -78,10 +75,14 @@ def main():
 
         elif choice == 'g'.lower():
             
+            device_list= refresh_device_list()
+            
             for device in device_list:
                 print(device)
             
         elif choice == 'd'.lower():
+            device_list = refresh_device_list()
+            
             for x in range(device_list_serials.size):
                 print(device_list_serials[x])
                 
@@ -93,7 +94,17 @@ def main():
             print("Invalid choice:", choice)
     
     
+def refresh_device_list():
+    device_list = []
+    device_list_serials = Adb_Util().get_device_list()
     
+    for serial_number in device_list_serials:
+        device_list.append(Device(serial_number))
+    
+    for device in device_list:
+        print(device)
+        
+    return device_list
 
 
 

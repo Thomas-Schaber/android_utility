@@ -86,7 +86,7 @@ class App:
         
     # Calculates files size in MB
     def init_file_size(self):
-        self.size = os.path.getsize(self.file_name) / 1000000  
+        self.size = round(os.path.getsize(self.file_name) / 1000000, 2) 
         
         
     def extract_base_apk(self, file_name):

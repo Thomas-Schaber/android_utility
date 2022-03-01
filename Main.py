@@ -77,13 +77,10 @@ def main():
             
             device_list= refresh_device_list()
             
-            for device in device_list:
-                print(device)
-            
         elif choice == 'd'.lower():
             device_list = refresh_device_list()
             
-            for x in range(device_list_serials.size):
+            for x in range(len(device_list_serials)):
                 print(device_list_serials[x])
                 
         elif choice == 'e':

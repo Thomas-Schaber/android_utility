@@ -44,6 +44,7 @@ def main():
     print("initializing device list...")
     device_list = refresh_device_list()
     
+    
     while choice.lower() != 'e'.lower():
         
         choice = input(question + "\n" + line + "\n").lower()

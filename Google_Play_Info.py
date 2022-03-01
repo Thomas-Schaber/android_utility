@@ -39,9 +39,12 @@ class Google_Play_Info:
 
      
     def get_rating(self):
-        
-        rating = self.soup.find("div", class_=self.app_rating_class).text
-        
+        try:
+            rating = self.soup.find("div", class_=self.app_rating_class).text
+        except Exception as e:
+            print("No star rating for package:", self.package_name)
+            return '0'
+            
         return rating
         
     

@@ -9,9 +9,9 @@ Bundle tool (and android development tool) must be put into the apk directory an
 The tool can be downloaded here: https://developer.android.com/studio/command-line/bundletool
 
 This program also requires that you have the environment varibles for android development tool set in windows. The version of these tool may vary.
-For example: <br>
-  ..\AppData\Local\Android\Sdk\build-tools\32.0.0
-  ..\AppData\Local\Android\Sdk\platform-tools
+For example:
+<br>..\AppData\Local\Android\Sdk\build-tools\32.0.0
+<br>..\AppData\Local\Android\Sdk\platform-tools
   
   
   Android developement tools can be installed by going to https://developer.android.com/studio and with Android Studio the tools should also be installed

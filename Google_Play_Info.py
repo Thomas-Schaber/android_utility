@@ -19,7 +19,7 @@ class Google_Play_Info:
         self.app_name_class = "Fd93Bb"
         self.app_dev_class = "Vbfug auoIOc"
         self.app_rating_class = "TT9eCd"
-        self.app_maturity_class = "KmO8jd"
+        self.app_maturity_class = "ClM7O"
 
         pass
     
@@ -68,10 +68,10 @@ class Google_Play_Info:
     
     def get_maturity(self):
         try:
-            maturity = self.soup.find("div", class_=self.app_maturity_class).text
+            maturity = self.soup.find("div", class_="q078ud").text
             return maturity
         except Exception as e:
-            print("Failed to pull maturity for:", self.package_name)
+            #print("Failed to pull maturity for:", self.package_name)
             #print(e)
 
             return "null"

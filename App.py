@@ -7,6 +7,7 @@ Created on Tue Feb 15 20:15:41 2022
 import subprocess
 import pathlib
 import os
+import time
 import zipfile
 from Google_Play_Info import Google_Play_Info
 
@@ -57,7 +58,9 @@ class App:
             raise Exception("Invalid file type")
         
         self.init_file_size()
+        #print(self.package_name)
         self.search = Google_Play_Info(self.package_name)
+        #print(self.search.URL + self.search.package_name)
         self.init_app_name()
         self.init_app_developer()
         self.init_app_rating()
@@ -65,38 +68,41 @@ class App:
         
     def init_app_name(self):
         self.app_name = self.search.get_name()
-        
-    
+        #print(self.app_name)
+        while self.app_name == "null":
+            self.search.retry()
+            self.app_name = self.search.get_name()
+
     def init_app_developer(self):
         self.developer = self.search.get_developer()
-        
+        #print(self.developer)
+        while self.developer == "null":
+            self.search.retry()
+            self.developer = self.search.get_developer()
         
     def init_app_rating(self):
         self.rating = self.search.get_rating()
-            
-   
+
+
     def init_app_maturity(self):
         self.maturity = self.search.get_maturity()
+        #while self.maturity == "null":
+        #    self.search.retry()
+        #    self.maturity = self.search.maturity()
 
-        
     def init_file_type(self):
         self.file_type = pathlib.Path(self.directory 
                                       + "\\" +self.file_name).suffix
-        
-        
+
     # Calculates files size in MB
     def init_file_size(self):
         self.size = round(os.path.getsize(self.file_name) / 1000000, 2) 
-        
-        
+
     def extract_base_apk(self, file_name):
 
         with zipfile.ZipFile(file_name) as apks:            
             apks.extract('splits/base.apk')
-            
-        #print("Successfully extracted base.apk\n")
-        
-            
+
     #aapt2 dump badging com.booking.apk
     def extract_manifest(self, file_name):
         package_info = {}
@@ -142,8 +148,7 @@ class App:
         else:
             print("An error occured when extracting manifest", 
                   manifest_command.stderr)
-    
-            
+
     def __str__(self):
         if self.file_type == '.apk' or self.file_type == '.apks':
             string = "File Name: {:s}\nFile Type {:s}\nApp Name: {:s}" \

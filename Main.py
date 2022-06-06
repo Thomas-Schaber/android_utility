@@ -18,7 +18,7 @@ import os
 
 
 def main():
-    apk_directory = "C:\\Users\\tommy\\CSC221\\Android_Project1\\apk"
+    apk_directory = "C:\\Users\\thomas.schaber\\Documents\\ApkApp\\android_utility-master\\apk"
     
     question = "What would you like to do?\nInstall, Uninstall," \
                    " Process apk info, Get device info, Device list, Exit:"
@@ -38,12 +38,12 @@ def main():
         try:
             app_list.append(App(apk_directory, file))
         except Exception as e:
+            print(e, " ", file)
             pass
         
     print(len(app_list), "apps found\n")
     print("initializing device list...")
     device_list = refresh_device_list()
-    
     
     while choice.lower() != 'e'.lower():
         
@@ -51,7 +51,7 @@ def main():
         print()
         
         if choice == 'i':
-            device_list =  refresh_device_list()
+            device_list = refresh_device_list()
             
             if len(device_list) > 0:
                 for device in device_list:
@@ -66,20 +66,21 @@ def main():
             device_list = refresh_device_list()
             
             for device in device_list:
-                device.init_package_list()
-                device.uninstall_all()
-
+                try:
+                    device.init_package_list()
+                    device.uninstall_all()
+                except Exception as e:
+                    print(e)
 
         elif choice == 'p'.lower():
             Apk_Processor(app_list)
             print("Processed successfully...")
 
         elif choice == 'g'.lower():
-            
-            device_list= refresh_device_list()
+            refresh_device_list()
             
         elif choice == 'd'.lower():
-            device_list = refresh_device_list()
+            refresh_device_list()
             
             for x in range(len(device_list_serials)):
                 print(device_list_serials[x])

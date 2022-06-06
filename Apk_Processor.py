@@ -120,7 +120,7 @@ class Apk_Processor:
         self.data['uninstall'] = uninstall
         self.data['conversion'] = conversion
         self.data['flags'] = flags
-        
+
     
     def create_csv(self):
         self.data.to_csv("package_info.csv", encoding='utf-8-sig')

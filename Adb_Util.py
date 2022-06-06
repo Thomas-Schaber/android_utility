@@ -79,7 +79,7 @@ class Adb_Util:
             print(package_name, "uninstalled successfully\n")
         
         else:
-            print(uninstall_command.stdout)
+            print(uninstall_command.stdout.decode('utf-8'))
             print("An error occured with package", package_name)
     
     

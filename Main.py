@@ -15,11 +15,22 @@ from App import App
 import numpy as np
 import sys
 import os
+import requests
 
 
 def main():
-    apk_directory = "C:\\Users\\thomas.schaber\\Documents\\ApkApp\\android_utility-master\\apk"
-    
+    apk_directory = os.getcwd()
+    bundletool_download_url = 'https://github.com/google/bundletool/releases/download/1.10.0/bundletool-all-1.10.0.jar'
+
+    if os.path.exists(apk_directory + '\\apk'):
+        apk_directory = apk_directory + '\\apk'
+    else:
+        os.mkdir('apk')
+        apk_directory = apk_directory + '\\apk'
+        response = requests.get(bundletool_download_url)
+        open(apk_directory + "\\bundletool-all.jar", "wb").write(response.content)
+        
+
     question = "What would you like to do?\nInstall, Uninstall," \
                    " Process apk info, Get device info, Device list, Exit:"
     line = ""

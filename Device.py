@@ -18,7 +18,7 @@ class Device:
                  name=None):
         
         self.deviceID = deviceID
-        
+        self.exclude = np.array(["com.expressvpn.vpn", "com.symantec.mobilesecurity"])
         if name == None:
             self.name = self.init_device_name()    
         else:
@@ -118,7 +118,8 @@ class Device:
     def uninstall_all(self):
         if len(self.packageList) > 0:
             for package_name in self.packageList:
-                Adb_Util().unistall_package(self.deviceID, package_name)
+                if package_name not in self.exclude:
+                    Adb_Util().unistall_package(self.deviceID, package_name)
             self.init_package_list()
         else:
             print("The amount of apps installed on device is currently 0")
